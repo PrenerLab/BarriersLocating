@@ -3,6 +3,7 @@
 ### Repository Contents
 This repository contains files for:
   - README.md
+  - researchLog.md
   - .gitignore
 
 ### Repository Purpose
