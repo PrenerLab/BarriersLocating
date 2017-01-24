@@ -59,3 +59,41 @@ The following observations are noted for being in different wards than listed on
 288
 
 The next step for these above observations are to regeocode the Wards. Dr. Prener suggests perfoming a spatial join of the barrier point data to the ward files
+
+### 23 Jan 2017 - KYLE
+
+The following observations are noted for being inconsistent with the Waldron Cleaned data.
+
+119: Street intersection not found.
+127: Duplicate of observation 117.
+135: No barrier present at the time of geocoding. Street open.
+149: Duplicate of observation 148.
+168: Duplicate of observation 165.
+175: No barrier present at the time of geocoding. Street open, but there is a no trespassing sign.
+225: Do not enter sign present, so no barrier was geocoded.
+226: Intersection not found.
+236: Intersection not found.
+240: Intersection not found.
+247: Intersection not found.
+254: Intersection not found.
+
+The following observations are noted for being in different wards than that listed on Waldron Cleaned data.
+
+178: Incorrect ward listed.
+179: Incorrect ward listed.
+182: Incorrect ward listed.
+183: Incorrect ward listed.
+187: Incorrect ward listed.
+190: Incorrect ward listed.
+191: Incorrect ward listed.
+213: Incorrect ward listed.
+214: Incorrect ward listed.
+215: Incorrect ward listed.
+219: Incorrect ward listed.
+220: Incorrect ward listed.
+221: Incorrect ward listed.
+222: Incorrect ward listed.
+224: Incorrect ward listed.
+
+
+
