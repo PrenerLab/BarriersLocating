@@ -9,7 +9,9 @@ library(dplyr)
 
 
 ```{r}
+barriers <- read.csv("barrierDates.csv", stringsAsFactors = FALSE)
 barrierLocs <- read.csv("mergedBarriers.csv", stringsAsFactors = FALSE)
+barrierVerify <- read.csv("barriersVerify.csv", stringsAsFactors = FALSE)
 ```
 
 ```{r}
@@ -18,7 +20,10 @@ barrierLocs <- mutate(barrierLocs, id = Observatio+BarrierID)
 
 ```{r}
 barrierChecks <- left_join(barriers, barrierLocs, by = "id")
+barrierChecks <- left_join(barrierChecks, barrierVerify, by = "id")
+```
 
+```{r}
 barrierChecks$check <- ifelse(is.na(barrierChecks$BarrierID) == TRUE, "fail", "pass")
 
 barrierChecks <- barrierChecks %>%

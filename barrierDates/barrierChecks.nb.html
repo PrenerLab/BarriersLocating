@@ -177,12 +177,26 @@ $(document).ready(function () {
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmBgYCJ9 -->
 <pre class="r"><code>library(dplyr)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYZHBseXLigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOnN0YXRz4oCZOlxuXG4gICAgZmlsdGVyLCBsYWdcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmJhc2XigJk6XG5cbiAgICBpbnRlcnNlY3QsIHNldGRpZmYsIHNldGVxdWFsLCB1bmlvblxuIn0= -->
+<pre><code>
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllckxvY3MgPC0gcmVhZC5jc3YoXCJtZXJnZWRCYXJyaWVycy5jc3ZcIiwgc3RyaW5nc0FzRmFjdG9ycyA9IEZBTFNFKVxuYGBgIn0= -->
-<pre class="r"><code>barrierLocs &lt;- read.csv(&quot;mergedBarriers.csv&quot;, stringsAsFactors = FALSE)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllcnMgPC0gcmVhZC5jc3YoXCJiYXJyaWVyRGF0ZXMuY3N2XCIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSlcbmJhcnJpZXJMb2NzIDwtIHJlYWQuY3N2KFwibWVyZ2VkQmFycmllcnMuY3N2XCIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSlcbmJhcnJpZXJWZXJpZnkgPC0gcmVhZC5jc3YoXCJiYXJyaWVyc1ZlcmlmeS5jc3ZcIiwgc3RyaW5nc0FzRmFjdG9ycyA9IEZBTFNFKVxuYGBgIn0= -->
+<pre class="r"><code>barriers &lt;- read.csv(&quot;barrierDates.csv&quot;, stringsAsFactors = FALSE)
+barrierLocs &lt;- read.csv(&quot;mergedBarriers.csv&quot;, stringsAsFactors = FALSE)
+barrierVerify &lt;- read.csv(&quot;barriersVerify.csv&quot;, stringsAsFactors = FALSE)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -195,9 +209,16 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllckNoZWNrcyA8LSBsZWZ0X2pvaW4oYmFycmllcnMsIGJhcnJpZXJMb2NzLCBieSA9IFwiaWRcIilcbmJhcnJpZXJDaGVja3MkY2hlY2sgPC0gaWZlbHNlKGlzLm5hKGJhcnJpZXJDaGVja3MkQmFycmllcklEKSA9PSBUUlVFLCBcImZhaWxcIiwgXCJwYXNzXCIpXG5iYXJyaWVyQ2hlY2tzIDwtIGJhcnJpZXJDaGVja3MgJT4lXG4gIGZpbHRlcihjaGVjayA9PSBcImZhaWxcIilcbndyaXRlLmNzdihiYXJyaWVyQ2hlY2tzLCBcImJhcnJpZXJzTWlzc2luZy5jc3ZcIilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllckNoZWNrcyA8LSBsZWZ0X2pvaW4oYmFycmllcnMsIGJhcnJpZXJMb2NzLCBieSA9IFwiaWRcIilcbmJhcnJpZXJDaGVja3MgPC0gbGVmdF9qb2luKGJhcnJpZXJDaGVja3MsIGJhcnJpZXJWZXJpZnksIGJ5ID0gXCJpZFwiKVxuYGBgIn0= -->
 <pre class="r"><code>barrierChecks &lt;- left_join(barriers, barrierLocs, by = &quot;id&quot;)
-barrierChecks$check &lt;- ifelse(is.na(barrierChecks$BarrierID) == TRUE, &quot;fail&quot;, &quot;pass&quot;)
+barrierChecks &lt;- left_join(barrierChecks, barrierVerify, by = &quot;id&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllckNoZWNrcyRjaGVjayA8LSBpZmVsc2UoaXMubmEoYmFycmllckNoZWNrcyRCYXJyaWVySUQpID09IFRSVUUsIFwiZmFpbFwiLCBcInBhc3NcIilcbmJhcnJpZXJDaGVja3MgPC0gYmFycmllckNoZWNrcyAlPiVcbiAgZmlsdGVyKGNoZWNrID09IFwiZmFpbFwiKVxud3JpdGUuY3N2KGJhcnJpZXJDaGVja3MsIFwiYmFycmllcnNNaXNzaW5nLmNzdlwiKVxuYGBgIn0= -->
+<pre class="r"><code>barrierChecks$check &lt;- ifelse(is.na(barrierChecks$BarrierID) == TRUE, &quot;fail&quot;, &quot;pass&quot;)
 barrierChecks &lt;- barrierChecks %&gt;%
   filter(check == &quot;fail&quot;)
 write.csv(barrierChecks, &quot;barriersMissing.csv&quot;)</code></pre>
@@ -206,7 +227,7 @@ write.csv(barrierChecks, &quot;barriersMissing.csv&quot;)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQmFycmllciBDaGVja3MiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCmBgYHtyfQpsaWJyYXJ5KGRwbHlyKQpgYGAKCgpgYGB7cn0KYmFycmllckxvY3MgPC0gcmVhZC5jc3YoIm1lcmdlZEJhcnJpZXJzLmNzdiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSkKYGBgCgpgYGB7cn0KYmFycmllckxvY3MgPC0gbXV0YXRlKGJhcnJpZXJMb2NzLCBpZCA9IE9ic2VydmF0aW8rQmFycmllcklEKQpgYGAKCmBgYHtyfQpiYXJyaWVyQ2hlY2tzIDwtIGxlZnRfam9pbihiYXJyaWVycywgYmFycmllckxvY3MsIGJ5ID0gImlkIikKCmJhcnJpZXJDaGVja3MkY2hlY2sgPC0gaWZlbHNlKGlzLm5hKGJhcnJpZXJDaGVja3MkQmFycmllcklEKSA9PSBUUlVFLCAiZmFpbCIsICJwYXNzIikKCmJhcnJpZXJDaGVja3MgPC0gYmFycmllckNoZWNrcyAlPiUKICBmaWx0ZXIoY2hlY2sgPT0gImZhaWwiKQoKd3JpdGUuY3N2KGJhcnJpZXJDaGVja3MsICJiYXJyaWVyc01pc3NpbmcuY3N2IikKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQmFycmllciBDaGVja3MiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCmBgYHtyfQpsaWJyYXJ5KGRwbHlyKQpgYGAKCgpgYGB7cn0KYmFycmllcnMgPC0gcmVhZC5jc3YoImJhcnJpZXJEYXRlcy5jc3YiLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpCmJhcnJpZXJMb2NzIDwtIHJlYWQuY3N2KCJtZXJnZWRCYXJyaWVycy5jc3YiLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpCmJhcnJpZXJWZXJpZnkgPC0gcmVhZC5jc3YoImJhcnJpZXJzVmVyaWZ5LmNzdiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSkKYGBgCgpgYGB7cn0KYmFycmllckxvY3MgPC0gbXV0YXRlKGJhcnJpZXJMb2NzLCBpZCA9IE9ic2VydmF0aW8rQmFycmllcklEKQpgYGAKCmBgYHtyfQpiYXJyaWVyQ2hlY2tzIDwtIGxlZnRfam9pbihiYXJyaWVycywgYmFycmllckxvY3MsIGJ5ID0gImlkIikKYmFycmllckNoZWNrcyA8LSBsZWZ0X2pvaW4oYmFycmllckNoZWNrcywgYmFycmllclZlcmlmeSwgYnkgPSAiaWQiKQpgYGAKCmBgYHtyfQpiYXJyaWVyQ2hlY2tzJGNoZWNrIDwtIGlmZWxzZShpcy5uYShiYXJyaWVyQ2hlY2tzJEJhcnJpZXJJRCkgPT0gVFJVRSwgImZhaWwiLCAicGFzcyIpCgpiYXJyaWVyQ2hlY2tzIDwtIGJhcnJpZXJDaGVja3MgJT4lCiAgZmlsdGVyKGNoZWNrID09ICJmYWlsIikKCndyaXRlLmNzdihiYXJyaWVyQ2hlY2tzLCAiYmFycmllcnNNaXNzaW5nLmNzdiIpCmBgYAoK</div>
 
 
 
