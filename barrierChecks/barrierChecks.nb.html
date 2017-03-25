@@ -174,6 +174,7 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <div id="dependencies" class="section level1">
 <h1>Dependencies</h1>
+<p>This notebooke requires the following packages:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkcGx5cilcbmxpYnJhcnkocmdkYWwpXG5saWJyYXJ5KGJyb29tKVxuYGBgIn0= -->
@@ -186,6 +187,7 @@ library(broom)</code></pre>
 </div>
 <div id="import-data" class="section level1">
 <h1>Import Data</h1>
+<p>The raw data come from two tables (location data for each barrier and google maps verification data for each barrier) as well as a shapefile of all barriers we’ve geocoded to date:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBpbXBvcnQgdGFidWxhciBkYXRhXG5iYXJyaWVyRGF0ZXMgIDwtIHJlYWQuY3N2KFwiYmFycmllckRhdGVzLmNzdlwiLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpXG5iYXJyaWVyVmVyaWZ5IDwtIHJlYWQuY3N2KFwiYmFycmllcnNWZXJpZnkuY3N2XCIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSlcbiMgY2hhbmdlIHdvcmtpbmcgZGlyZWN0b3J5IGZvciByZW1haW5kZXIgb2YgY29kZSBjaHVuayAod2lsbCByZXNldCBhdCBlbmQgb2YgY2h1bmspXG5zZXR3ZCgnLi4nKVxuc2V0d2QoXCJzcGF0aWFsRGF0YVwiKVxuIyBpbXBvcnQgc3BhdGlhbCBkYXRhXG5iYXJyaWVyR2VvICAgIDwtIHJlYWRPR1IoZHNuID0gXCIuXCIsIGxheWVyID0gXCJNZXJnZWRTaGFwZWZpbGVcIilcbmBgYCJ9 -->
@@ -213,19 +215,19 @@ barrierGeo    &lt;- tidy(barrierGeo)</code></pre>
 </div>
 <div id="combine-data-sources" class="section level1">
 <h1>Combine Data Sources</h1>
+<p>To faciliate the join below, we need to rename the identification barrier in <code>barrierGeo</code> from <code>BarrierID</code> to <code>id</code>:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyByZW5hbWUgaWQgdmFyaWFibGUgaW4gYmFycmllckdlbyB0byBmYWNpbGl0YXRlIGpvaW5cbmJhcnJpZXJHZW8gPC0gcmVuYW1lKGJhcnJpZXJHZW8sIGlkID0gQmFycmllcklEKVxuYGBgIn0= -->
-<pre class="r"><code># rename id variable in barrierGeo to facilitate join
-barrierGeo &lt;- rename(barrierGeo, id = BarrierID)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllckdlbyA8LSByZW5hbWUoYmFycmllckdlbywgaWQgPSBCYXJyaWVySUQpXG5gYGAifQ== -->
+<pre class="r"><code>barrierGeo &lt;- rename(barrierGeo, id = BarrierID)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>In order to check these data to identify barriers that we have not yet geocoded, all of the raw data are joined together:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyB0YWJsZSBqb2luc1xuYmFycmllckNoZWNrcyA8LSBsZWZ0X2pvaW4oYmFycmllckRhdGVzLCBiYXJyaWVyVmVyaWZ5LCBieSA9IFwiaWRcIilcbmJhcnJpZXJDaGVja3MgPC0gbGVmdF9qb2luKGJhcnJpZXJDaGVja3MsIGJhcnJpZXJHZW8sIGJ5ID0gXCJpZFwiKVxuYGBgIn0= -->
-<pre class="r"><code># table joins
-barrierChecks &lt;- left_join(barrierDates, barrierVerify, by = &quot;id&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllckNoZWNrcyA8LSBsZWZ0X2pvaW4oYmFycmllckRhdGVzLCBiYXJyaWVyVmVyaWZ5LCBieSA9IFwiaWRcIilcbmJhcnJpZXJDaGVja3MgPC0gbGVmdF9qb2luKGJhcnJpZXJDaGVja3MsIGJhcnJpZXJHZW8sIGJ5ID0gXCJpZFwiKVxuYGBgIn0= -->
+<pre class="r"><code>barrierChecks &lt;- left_join(barrierDates, barrierVerify, by = &quot;id&quot;)
 barrierChecks &lt;- left_join(barrierChecks, barrierGeo, by = &quot;id&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -233,24 +235,23 @@ barrierChecks &lt;- left_join(barrierChecks, barrierGeo, by = &quot;id&quot;)</c
 </div>
 <div id="check-for-missing-barriers-in-spatial-data" class="section level1">
 <h1>Check for Missing Barriers in Spatial Data</h1>
+<p>This section executes a logic test on the joined data, looking for observations that are missing x or y coordinates. When those observations are found, they are piped into a new data frame named <code>barrierFail</code>:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllckNoZWNrcyRjaGVjayA8LSBpZmVsc2UoaXMubmEoYmFycmllckNoZWNrcyRjb29yZHMueDEpID09IFRSVUUgfCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlzLm5hKGJhcnJpZXJDaGVja3MkY29vcmRzLngyKSA9PSBUUlVFLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZmFpbFwiLCBcInBhc3NcIilcblxuYmFycmllckNoZWNrcyA8LSBiYXJyaWVyQ2hlY2tzICU+JVxuICBmaWx0ZXIoY2hlY2sgPT0gXCJmYWlsXCIpXG5cbndyaXRlLmNzdihiYXJyaWVyQ2hlY2tzLCBcImJhcnJpZXJzTWlzc2luZy5jc3ZcIilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFycmllckNoZWNrcyRjaGVjayA8LSBpZmVsc2UoaXMubmEoYmFycmllckNoZWNrcyRjb29yZHMueDEpID09IFRSVUUgfCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlzLm5hKGJhcnJpZXJDaGVja3MkY29vcmRzLngyKSA9PSBUUlVFLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZmFpbFwiLCBcInBhc3NcIilcbmJhcnJpZXJGYWlsIDwtIGJhcnJpZXJDaGVja3MgJT4lXG4gIGZpbHRlcihjaGVjayA9PSBcImZhaWxcIilcbndyaXRlLmNzdihiYXJyaWVyRmFpbCwgXCJiYXJyaWVyc01pc3NpbmcuY3N2XCIpXG5gYGAifQ== -->
 <pre class="r"><code>barrierChecks$check &lt;- ifelse(is.na(barrierChecks$coords.x1) == TRUE | 
                               is.na(barrierChecks$coords.x2) == TRUE, 
                               &quot;fail&quot;, &quot;pass&quot;)
-
-barrierChecks &lt;- barrierChecks %&gt;%
+barrierFail &lt;- barrierChecks %&gt;%
   filter(check == &quot;fail&quot;)
-
-write.csv(barrierChecks, &quot;barriersMissing.csv&quot;)</code></pre>
+write.csv(barrierFail, &quot;barriersMissing.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQmFycmllciBDaGVja3MiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCiMgRGVwZW5kZW5jaWVzIAoKYGBge3IsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoZHBseXIpCmxpYnJhcnkocmdkYWwpCmxpYnJhcnkoYnJvb20pCmBgYAoKIyBJbXBvcnQgRGF0YQoKYGBge3IsIHdhcm5pbmc9RkFMU0V9CiMgaW1wb3J0IHRhYnVsYXIgZGF0YQpiYXJyaWVyRGF0ZXMgIDwtIHJlYWQuY3N2KCJiYXJyaWVyRGF0ZXMuY3N2Iiwgc3RyaW5nc0FzRmFjdG9ycyA9IEZBTFNFKQpiYXJyaWVyVmVyaWZ5IDwtIHJlYWQuY3N2KCJiYXJyaWVyc1ZlcmlmeS5jc3YiLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpCgojIGNoYW5nZSB3b3JraW5nIGRpcmVjdG9yeSBmb3IgcmVtYWluZGVyIG9mIGNvZGUgY2h1bmsgKHdpbGwgcmVzZXQgYXQgZW5kIG9mIGNodW5rKQpzZXR3ZCgnLi4nKQpzZXR3ZCgic3BhdGlhbERhdGEiKQoKIyBpbXBvcnQgc3BhdGlhbCBkYXRhCmJhcnJpZXJHZW8gICAgPC0gcmVhZE9HUihkc24gPSAiLiIsIGxheWVyID0gIk1lcmdlZFNoYXBlZmlsZSIpCgojIGNvbnZlcnQgc3BhdGlhbCBkYXRhIHRvIGRhdGEgZnJhbWUKYmFycmllckdlbyAgICA8LSB0aWR5KGJhcnJpZXJHZW8pCmBgYAoKIyBDb21iaW5lIERhdGEgU291cmNlcwoKYGBge3J9CiMgcmVuYW1lIGlkIHZhcmlhYmxlIGluIGJhcnJpZXJHZW8gdG8gZmFjaWxpdGF0ZSBqb2luCmJhcnJpZXJHZW8gPC0gcmVuYW1lKGJhcnJpZXJHZW8sIGlkID0gQmFycmllcklEKQpgYGAKCgpgYGB7cn0KIyB0YWJsZSBqb2lucwpiYXJyaWVyQ2hlY2tzIDwtIGxlZnRfam9pbihiYXJyaWVyRGF0ZXMsIGJhcnJpZXJWZXJpZnksIGJ5ID0gImlkIikKYmFycmllckNoZWNrcyA8LSBsZWZ0X2pvaW4oYmFycmllckNoZWNrcywgYmFycmllckdlbywgYnkgPSAiaWQiKQpgYGAKCiMgQ2hlY2sgZm9yIE1pc3NpbmcgQmFycmllcnMgaW4gU3BhdGlhbCBEYXRhCgpgYGB7cn0KYmFycmllckNoZWNrcyRjaGVjayA8LSBpZmVsc2UoaXMubmEoYmFycmllckNoZWNrcyRjb29yZHMueDEpID09IFRSVUUgfCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaXMubmEoYmFycmllckNoZWNrcyRjb29yZHMueDIpID09IFRSVUUsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiZmFpbCIsICJwYXNzIikKCmJhcnJpZXJDaGVja3MgPC0gYmFycmllckNoZWNrcyAlPiUKICBmaWx0ZXIoY2hlY2sgPT0gImZhaWwiKQoKd3JpdGUuY3N2KGJhcnJpZXJDaGVja3MsICJiYXJyaWVyc01pc3NpbmcuY3N2IikKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQmFycmllciBDaGVja3MiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCiMgRGVwZW5kZW5jaWVzIAoKVGhpcyBub3RlYm9va2UgcmVxdWlyZXMgdGhlIGZvbGxvd2luZyBwYWNrYWdlczoKCmBgYHtyLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KGRwbHlyKQpsaWJyYXJ5KHJnZGFsKQpsaWJyYXJ5KGJyb29tKQpgYGAKCiMgSW1wb3J0IERhdGEKClRoZSByYXcgZGF0YSBjb21lIGZyb20gdHdvIHRhYmxlcyAobG9jYXRpb24gZGF0YSBmb3IgZWFjaCBiYXJyaWVyIGFuZCBnb29nbGUgbWFwcyB2ZXJpZmljYXRpb24gZGF0YSBmb3IgZWFjaCBiYXJyaWVyKSBhcyB3ZWxsIGFzIGEgc2hhcGVmaWxlIG9mIGFsbCBiYXJyaWVycyB3ZSd2ZSBnZW9jb2RlZCB0byBkYXRlOgoKYGBge3IsIHdhcm5pbmc9RkFMU0V9CiMgaW1wb3J0IHRhYnVsYXIgZGF0YQpiYXJyaWVyRGF0ZXMgIDwtIHJlYWQuY3N2KCJiYXJyaWVyRGF0ZXMuY3N2Iiwgc3RyaW5nc0FzRmFjdG9ycyA9IEZBTFNFKQpiYXJyaWVyVmVyaWZ5IDwtIHJlYWQuY3N2KCJiYXJyaWVyc1ZlcmlmeS5jc3YiLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpCgojIGNoYW5nZSB3b3JraW5nIGRpcmVjdG9yeSBmb3IgcmVtYWluZGVyIG9mIGNvZGUgY2h1bmsgKHdpbGwgcmVzZXQgYXQgZW5kIG9mIGNodW5rKQpzZXR3ZCgnLi4nKQpzZXR3ZCgic3BhdGlhbERhdGEiKQoKIyBpbXBvcnQgc3BhdGlhbCBkYXRhCmJhcnJpZXJHZW8gICAgPC0gcmVhZE9HUihkc24gPSAiLiIsIGxheWVyID0gIk1lcmdlZFNoYXBlZmlsZSIpCgojIGNvbnZlcnQgc3BhdGlhbCBkYXRhIHRvIGRhdGEgZnJhbWUKYmFycmllckdlbyAgICA8LSB0aWR5KGJhcnJpZXJHZW8pCmBgYAoKIyBDb21iaW5lIERhdGEgU291cmNlcwoKVG8gZmFjaWxpYXRlIHRoZSBqb2luIGJlbG93LCB3ZSBuZWVkIHRvIHJlbmFtZSB0aGUgaWRlbnRpZmljYXRpb24gYmFycmllciBpbiBgYmFycmllckdlb2AgZnJvbSBgQmFycmllcklEYCB0byBgaWRgOgoKYGBge3J9CmJhcnJpZXJHZW8gPC0gcmVuYW1lKGJhcnJpZXJHZW8sIGlkID0gQmFycmllcklEKQpgYGAKCkluIG9yZGVyIHRvIGNoZWNrIHRoZXNlIGRhdGEgdG8gaWRlbnRpZnkgYmFycmllcnMgdGhhdCB3ZSBoYXZlIG5vdCB5ZXQgZ2VvY29kZWQsIGFsbCBvZiB0aGUgcmF3IGRhdGEgYXJlIGpvaW5lZCB0b2dldGhlcjoKCmBgYHtyfQpiYXJyaWVyQ2hlY2tzIDwtIGxlZnRfam9pbihiYXJyaWVyRGF0ZXMsIGJhcnJpZXJWZXJpZnksIGJ5ID0gImlkIikKYmFycmllckNoZWNrcyA8LSBsZWZ0X2pvaW4oYmFycmllckNoZWNrcywgYmFycmllckdlbywgYnkgPSAiaWQiKQpgYGAKCiMgQ2hlY2sgZm9yIE1pc3NpbmcgQmFycmllcnMgaW4gU3BhdGlhbCBEYXRhCgpUaGlzIHNlY3Rpb24gZXhlY3V0ZXMgYSBsb2dpYyB0ZXN0IG9uIHRoZSBqb2luZWQgZGF0YSwgbG9va2luZyBmb3Igb2JzZXJ2YXRpb25zIHRoYXQgYXJlIG1pc3NpbmcgeCBvciB5IGNvb3JkaW5hdGVzLiBXaGVuIHRob3NlIG9ic2VydmF0aW9ucyBhcmUgZm91bmQsIHRoZXkgYXJlIHBpcGVkIGludG8gYSBuZXcgZGF0YSBmcmFtZSBuYW1lZCBgYmFycmllckZhaWxgOgoKYGBge3J9CmJhcnJpZXJDaGVja3MkY2hlY2sgPC0gaWZlbHNlKGlzLm5hKGJhcnJpZXJDaGVja3MkY29vcmRzLngxKSA9PSBUUlVFIHwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlzLm5hKGJhcnJpZXJDaGVja3MkY29vcmRzLngyKSA9PSBUUlVFLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImZhaWwiLCAicGFzcyIpCgpiYXJyaWVyRmFpbCA8LSBiYXJyaWVyQ2hlY2tzICU+JQogIGZpbHRlcihjaGVjayA9PSAiZmFpbCIpCgp3cml0ZS5jc3YoYmFycmllckZhaWwsICJiYXJyaWVyc01pc3NpbmcuY3N2IikKYGBgCgo=</div>
 
 
 

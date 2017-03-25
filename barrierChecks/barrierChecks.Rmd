@@ -5,6 +5,8 @@ output: html_notebook
 
 # Dependencies 
 
+This notebooke requires the following packages:
+
 ```{r, warning=FALSE}
 library(dplyr)
 library(rgdal)
@@ -12,6 +14,8 @@ library(broom)
 ```
 
 # Import Data
+
+The raw data come from two tables (location data for each barrier and google maps verification data for each barrier) as well as a shapefile of all barriers we've geocoded to date:
 
 ```{r, warning=FALSE}
 # import tabular data
@@ -31,28 +35,31 @@ barrierGeo    <- tidy(barrierGeo)
 
 # Combine Data Sources
 
+To faciliate the join below, we need to rename the identification barrier in `barrierGeo` from `BarrierID` to `id`:
+
 ```{r}
-# rename id variable in barrierGeo to facilitate join
 barrierGeo <- rename(barrierGeo, id = BarrierID)
 ```
 
+In order to check these data to identify barriers that we have not yet geocoded, all of the raw data are joined together:
 
 ```{r}
-# table joins
 barrierChecks <- left_join(barrierDates, barrierVerify, by = "id")
 barrierChecks <- left_join(barrierChecks, barrierGeo, by = "id")
 ```
 
 # Check for Missing Barriers in Spatial Data
 
+This section executes a logic test on the joined data, looking for observations that are missing x or y coordinates. When those observations are found, they are piped into a new data frame named `barrierFail`:
+
 ```{r}
 barrierChecks$check <- ifelse(is.na(barrierChecks$coords.x1) == TRUE | 
                               is.na(barrierChecks$coords.x2) == TRUE, 
                               "fail", "pass")
 
-barrierChecks <- barrierChecks %>%
+barrierFail <- barrierChecks %>%
   filter(check == "fail")
 
-write.csv(barrierChecks, "barriersMissing.csv")
+write.csv(barrierFail, "barriersMissing.csv")
 ```
 
