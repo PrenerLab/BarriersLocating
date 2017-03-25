@@ -1,0 +1,38 @@
+---
+title: "Barrier Dates"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+barriers <- read.csv("barrierDates.csv", stringsAsFactors = FALSE)
+```
+
+```{r}
+barriersYear <- barriers %>%
+  filter(is.na(year) == FALSE) %>%
+  filter(year > 1958) %>%
+  group_by(year) %>%
+  summarise(count = n()) 
+
+barriersYear$countTot <- cumsum(barriersYear$count)
+
+barriersPlot <- barriersYear %>%
+  ggplot(aes(x = year)) +
+    geom_line(aes(y = count, colour = "Per Year")) + 
+    geom_line(aes(y = countTot, colour = "Cumulative")) +
+    labs(title = "Street Barriers in St. Louis",
+         subtitle = "Installations per Year and Cumulatively",
+         x = "Year",
+         y = "Count",
+         colour = "")
+
+barriersPlot
+
+ggsave(barriersPlot, file = "barriersPlot.png")
+```
+

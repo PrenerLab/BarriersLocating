@@ -1,0 +1,29 @@
+---
+title: "Barrier Checks"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+```
+
+
+```{r}
+barrierLocs <- read.csv("mergedBarriers.csv", stringsAsFactors = FALSE)
+```
+
+```{r}
+barrierLocs <- mutate(barrierLocs, id = Observatio+BarrierID)
+```
+
+```{r}
+barrierChecks <- left_join(barriers, barrierLocs, by = "id")
+
+barrierChecks$check <- ifelse(is.na(barrierChecks$BarrierID) == TRUE, "fail", "pass")
+
+barrierChecks <- barrierChecks %>%
+  filter(check == "fail")
+
+write.csv(barrierChecks, "barriersMissing.csv")
+```
+
