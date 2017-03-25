@@ -63,3 +63,9 @@ barrierFail <- barrierChecks %>%
 write.csv(barrierFail, "barriersMissing.csv")
 ```
 
+```{r}
+barrierChecks %>%
+  filter(check == "pass" & googleMapsVerify == 0) %>%
+  select(id, coords.x1, coords.x2)
+```
+
