@@ -3,28 +3,52 @@ title: "Barrier Checks"
 output: html_notebook
 ---
 
-```{r}
+# Dependencies 
+
+```{r, warning=FALSE}
 library(dplyr)
+library(rgdal)
+library(broom)
 ```
 
+# Import Data
 
-```{r}
-barriers <- read.csv("barrierDates.csv", stringsAsFactors = FALSE)
-barrierLocs <- read.csv("mergedBarriers.csv", stringsAsFactors = FALSE)
+```{r, warning=FALSE}
+# import tabular data
+barrierDates  <- read.csv("barrierDates.csv", stringsAsFactors = FALSE)
 barrierVerify <- read.csv("barriersVerify.csv", stringsAsFactors = FALSE)
+
+# change working directory for remainder of code chunk (will reset at end of chunk)
+setwd('..')
+setwd("spatialData")
+
+# import spatial data
+barrierGeo    <- readOGR(dsn = ".", layer = "MergedShapefile")
+
+# convert spatial data to data frame
+barrierGeo    <- tidy(barrierGeo)
 ```
 
-```{r}
-barrierLocs <- mutate(barrierLocs, id = Observatio+BarrierID)
-```
+# Combine Data Sources
 
 ```{r}
-barrierChecks <- left_join(barriers, barrierLocs, by = "id")
-barrierChecks <- left_join(barrierChecks, barrierVerify, by = "id")
+# rename id variable in barrierGeo to facilitate join
+barrierGeo <- rename(barrierGeo, id = BarrierID)
 ```
 
+
 ```{r}
-barrierChecks$check <- ifelse(is.na(barrierChecks$BarrierID) == TRUE, "fail", "pass")
+# table joins
+barrierChecks <- left_join(barrierDates, barrierVerify, by = "id")
+barrierChecks <- left_join(barrierChecks, barrierGeo, by = "id")
+```
+
+# Check for Missing Barriers in Spatial Data
+
+```{r}
+barrierChecks$check <- ifelse(is.na(barrierChecks$coords.x1) == TRUE | 
+                              is.na(barrierChecks$coords.x2) == TRUE, 
+                              "fail", "pass")
 
 barrierChecks <- barrierChecks %>%
   filter(check == "fail")
