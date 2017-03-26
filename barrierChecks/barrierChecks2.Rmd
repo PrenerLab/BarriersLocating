@@ -1,0 +1,75 @@
+---
+title: "Barrier Checks 2"
+output: html_notebook
+---
+
+# Dependencies 
+
+This notebooke requires the following packages:
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(rgdal)
+library(broom)
+```
+
+# Import Data
+
+The raw data come from two tables (location data for each barrier and google maps verification data for each barrier) as well as a shapefile of all barriers we've geocoded to date:
+
+```{r, warning=FALSE}
+# import tabular data
+allBarriers  <- read.csv("allBarriers.csv", stringsAsFactors = FALSE)
+
+# change working directory for remainder of code chunk (will reset at end of chunk)
+setwd('..')
+setwd("spatialData")
+
+# import spatial data
+barrierGeo    <- readOGR(dsn = ".", layer = "MergedShapefile")
+
+# convert spatial data to data frame
+barrierGeo    <- tidy(barrierGeo)
+```
+
+# Combine Data Sources
+
+To faciliate the join below, we need to rename the identification barrier in `barrierGeo` from `BarrierID` to `id`:
+
+```{r}
+barrierGeo <- rename(barrierGeo, id = BarrierID)
+```
+
+We also re-sort the barriers in both data frames so that they are both in ascending numerical order:
+
+```{r}
+barrierGeo <-  arrange(barrierGeo, id) 
+allBarriers <-  arrange(allBarriers, id)
+```
+
+In order to check these data to identify barriers that we have not yet geocoded, all of the raw data are joined together:
+
+```{r}
+barrierChecks2 <- left_join(allBarriers, barrierGeo, by = "id")
+```
+
+# Simplify Barrier Status & Test to Confirm That All Street Closed Barriers Have Been Geocoded
+
+```{r}
+barrierChecks2$test1 <- ifelse(barrierChecks2$status == "street closed", TRUE, FALSE)
+
+barrierPass2 <- barrierChecks2 %>%
+  filter(test1 == TRUE)
+
+barrierPass2$test2 <- ifelse(is.na(barrierPass2$coords.x1) == TRUE, "fail", "pass")
+
+# barrierFail2 <- barrierChecks2 %>%
+#  filter(test1 == FALSE)
+```
+
+```{r}
+allBarriers <- barrierChecks2 %>%
+  select(id, status)
+write.csv(allBarriers, "allBarriers_v2.csv")
+```
+
