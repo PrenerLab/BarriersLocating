@@ -95,5 +95,29 @@ The following observations are noted for being in different wards than that list
 222: Incorrect ward listed.
 224: Incorrect ward listed.
 
+### 25 Mar 2017  - KYLE
 
+Duplicates of BarrierIDs 170,171, 173, 228, 229, and 230 removed.
+
+Geocoding barriersmissing.csv
+29: Hyarr should be Hyam
+33: Neccho could not be found
+63: Appears to be a duplicate of 51
+68: Pauschenback should be Rauchenback and Heben should be Herbert
+72: Appears to be a duplicate of 64
+93: Not found
+110: Accoitiac should be Accomac
+111: Accoitiac should be Accomac
+112: Accoitiac should be Accomac
+116: Earton should be Barton
+121: Neither street found
+124: No intersecting street provided
+151: Street intersection not found
+172: Street intersection not found
+193: Street intersection not found
+195: Street intersection not found
+196: Street intersection not found
+212: Possible duplicate of 202
+278: No difference between observation and 279
+265: No difference between observation and 284
 
